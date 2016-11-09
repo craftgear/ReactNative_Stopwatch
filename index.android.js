@@ -10,10 +10,12 @@ class ReactNative_Stopwatch extends Component {
       timeElapsed: null,
       running: false,
       startTime: null,
+      laps: [],
     };
 
     this.handleStartPress = this.handleStartPress.bind(this);
     this.handleLapPress = this.handleLapPress.bind(this);
+    this.laps = this.laps.bind(this);
   }
 
 
@@ -30,12 +32,19 @@ class ReactNative_Stopwatch extends Component {
           </View>
         </View>
         <View style={styles.footer}>
-          <Text>
-            I am a list of Laps
-          </Text>
+          {this.laps()}
         </View>
       </View>
     );
+  }
+
+  laps() {
+    return this.state.laps.map((v, i) => {
+      return <View key={i} style={styles.lap}>
+        <Text style={styles.lapText}>Lap #{i+1}</Text>
+        <Text style={styles.lapText}>Lap {formatTime(v)}</Text>
+        </View>
+    })
   }
 
   startStopButton() {
@@ -85,7 +94,7 @@ class ReactNative_Stopwatch extends Component {
         timeElapsed: new Date() - this.state.startTime,
         running: true,
       });
-    }, 50);
+    }, 100);
   }
 };
 
@@ -128,7 +137,15 @@ const styles = StyleSheet.create({
   },
   stopButton: {
     borderColor: 'red',
+  },
+  lap: {
+    justifyContent: 'space-around',
+    flexDirection: 'row',
+  },
+  lapText: {
+    fontSize: 20
   }
+
 });
 
 AppRegistry.registerComponent('ReactNative_Stopwatch', () => ReactNative_Stopwatch)
